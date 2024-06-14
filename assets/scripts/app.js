@@ -11,16 +11,35 @@ const LOG_EVENT_MONSTER_ATTACK = "MONSTER_ATTACK";
 const LOG_EVENT_PLAYER_HEAL = "PLAYER_HEAL";
 const LOG_EVENT_GAME_OVER = "GAME_OVER";
 
-const enteredValue = prompt("Maximum life for you and monster.", "100");
-
-let chosenMaxLife = parseInt(enteredValue);
-
 let battleLog = [];
+let lastLoggedEntry;
 
-if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
-  chosenMaxLife = 100;
-  alert("playing with default value");
+function getMaxLifeValues() {
+  const enteredValue = prompt("Maximum life for you and monster.", "100");
+
+  // tyr catch throw finally ..................
+
+  const parsedValue = parseInt(enteredValue);
+  if (isNaN(parsedValue) || parsedValue <= 0) {
+    throw { message: "Invalid User Input" };
+  }
+  return parsedValue;
 }
+let chosenMaxLife;
+
+try {
+  chosenMaxLife = getMaxLifeValues();
+} catch (error) {
+  console.log(error);
+  chosenMaxLife = 100;
+  alert("You entered something wrong, default value of 100 was used");
+  // throw error
+}
+
+// if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
+//   chosenMaxLife = 100;
+//   alert("playing with default value");
+// }
 
 let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
@@ -250,18 +269,46 @@ function healPlayerHandler() {
   endRound();
 }
 
-function printLogHandler() {
-  console.log(battleLog);
-}
-
-//using for loop
 // function printLogHandler() {
-//   for (let i = 0; i < 3; i++) {
-//     console.log("ppP");
-//   }
-
 //   console.log(battleLog);
 // }
+
+//using for loop
+function printLogHandler() {
+  // for (let i = 0; i < 3; i++) {
+  //   console.log("ppP");
+  // }
+
+  // ********* do ...while loop *************
+  // let j = 0;
+  // do {
+  //   console.log(j);
+  //   j++;
+  // } while (j < 3);
+
+  // for (let i = 0; i < battleLog.length; i++) {
+  //   console.log(battleLog[i]);
+  // }
+
+  // *******************For of Loop(only available for array strings)*************
+  //
+
+  //do while loop
+  let i = 0;
+  for (const logEntry of battleLog) {
+    if ((!lastLoggedEntry && lastLoggedEntry !== 0) || lastLoggedEntry < i) {
+      console.log(`#${i}`);
+      for (const key in logEntry) {
+        console.log(`${key} => ${logEntry[key]}`);
+        // console.log(logEntry[key]);
+      }
+
+      lastLoggedEntry = i;
+      break;
+    }
+    i++;
+  }
+}
 
 attackBtn.addEventListener("click", attackHandler);
 strongAttackBtn.addEventListener("click", strongAttackHandler);
