@@ -254,6 +254,15 @@ function printLogHandler() {
   console.log(battleLog);
 }
 
+//using for loop
+// function printLogHandler() {
+//   for (let i = 0; i < 3; i++) {
+//     console.log("ppP");
+//   }
+
+//   console.log(battleLog);
+// }
+
 attackBtn.addEventListener("click", attackHandler);
 strongAttackBtn.addEventListener("click", strongAttackHandler);
 healBtn.addEventListener("click", healPlayerHandler);
